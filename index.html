@@ -1,0 +1,994 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0">
+<title>OrelRelios Embroidery Cal</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* ══════════════════════════════════════
+   DARK THEME  (default)
+══════════════════════════════════════ */
+:root {
+  --bg:#0D1B2A; --card:#162436; --inp:#1A2D42;
+  --acc:#2E86AB; --acc2:#17A589; --ice:#A8DADC;
+  --txt:#FFFFFF; --txt2:#A8DADC;
+  --muted:#8FA8C0; --pink:#E8559A;
+  --brd:rgba(46,134,171,.25); --glow:rgba(46,134,171,.18);
+  --warn:#E74C3C; --r:16px; --rs:10px;
+}
+/* ══════════════════════════════════════
+   ORELRELIOS BRAND LIGHT THEME
+   Green #1d7f54 · Pink #E8559A · Gray #7f7f7f
+══════════════════════════════════════ */
+[data-theme="orel"] {
+  --bg:#F4F1ED; --card:#FDFAF7; --inp:#EAE5DE;
+  --acc:#1d7f54; --acc2:#E8559A; --ice:#1d7f54;
+  --txt:#1A1A1A; --txt2:#1d7f54;
+  --muted:#7f7f7f; --pink:#E8559A;
+  --brd:rgba(29,127,84,.18); --glow:rgba(29,127,84,.09);
+  --warn:#E74C3C;
+}
+
+/* ── BASE ── */
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html{font-size:16px}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--txt);
+  min-height:100vh;display:flex;justify-content:center;align-items:flex-start}
+
+/* ── PHONE ── */
+.phone{width:100%;max-width:420px;min-height:100vh;background:var(--bg);
+  display:flex;flex-direction:column;position:relative;overflow:hidden}
+.phone::before{content:'';position:fixed;top:-120px;left:50%;transform:translateX(-50%);
+  width:380px;height:380px;
+  background:radial-gradient(circle,var(--glow) 0%,transparent 70%);
+  pointer-events:none;z-index:0}
+
+/* ── TOPBAR ── */
+.topbar{display:flex;align-items:center;justify-content:space-between;
+  padding:14px 16px 10px;position:relative;z-index:10}
+.topbar-brand{display:flex;align-items:center;gap:10px}
+.topbar-logo{width:36px;height:36px;flex-shrink:0}
+.topbar-title{font-size:14px;font-weight:700;letter-spacing:.2px;
+  background:linear-gradient(135deg,var(--ice),var(--acc));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent}
+[data-theme="orel"] .topbar-title{
+  background:linear-gradient(135deg,#1d7f54,#E8559A);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.topbar-sub{font-size:10px;color:var(--muted);margin-top:1px}
+.topbar-right{display:flex;align-items:center;gap:7px;flex-shrink:0}
+
+/* theme dots */
+.theme-wrap{display:flex;gap:5px;align-items:center}
+.tdot{width:20px;height:20px;border-radius:50%;cursor:pointer;
+  border:2.5px solid transparent;transition:all .2s;flex-shrink:0}
+.tdot:hover{transform:scale(1.2)}
+.tdot.active{border-color:#fff;box-shadow:0 0 0 1px rgba(255,255,255,.3)}
+[data-theme="orel"] .tdot.active{border-color:#1d7f54;box-shadow:0 0 0 1px rgba(29,127,84,.3)}
+.tdot.t-dark{background:linear-gradient(135deg,#0D1B2A 50%,#2E86AB)}
+.tdot.t-orel{background:linear-gradient(135deg,#1d7f54 50%,#E8559A)}
+
+.login-btn{display:flex;align-items:center;gap:4px;background:var(--card);
+  border:1px solid var(--brd);border-radius:10px;padding:6px 10px;
+  font-size:11px;font-weight:600;color:var(--muted);cursor:pointer;transition:all .2s}
+.login-btn:hover{background:var(--inp);color:var(--txt2)}
+.user-chip{display:flex;align-items:center;gap:5px;background:var(--card);
+  border:1px solid var(--brd);border-radius:20px;padding:4px 9px 4px 5px;
+  font-size:11px;color:var(--txt2);font-weight:600;cursor:pointer;transition:background .2s}
+.user-chip:hover{background:var(--inp)}
+.uavatar{width:20px;height:20px;border-radius:50%;
+  background:linear-gradient(135deg,var(--acc),var(--acc2));
+  display:flex;align-items:center;justify-content:center;
+  font-size:10px;font-weight:700;color:#FFF;flex-shrink:0}
+[data-theme="orel"] .uavatar{background:linear-gradient(135deg,#1d7f54,#E8559A)}
+
+/* ── TABS ── */
+.tabs{display:flex;gap:6px;padding:0 16px 14px;position:relative;z-index:10}
+.tab{flex:1;padding:9px 4px;border-radius:var(--rs);border:1px solid var(--brd);
+  background:var(--card);color:var(--muted);font-family:'DM Sans',sans-serif;
+  font-size:12px;font-weight:600;cursor:pointer;transition:all .22s;text-align:center}
+.tab.active{background:linear-gradient(135deg,#2E86AB,#1B4F72);
+  color:#FFF;border-color:transparent;box-shadow:0 4px 14px rgba(46,134,171,.35)}
+[data-theme="orel"] .tab.active{
+  background:linear-gradient(135deg,#1d7f54,#145235);
+  box-shadow:0 4px 14px rgba(29,127,84,.32)}
+.tab.locked{position:relative}
+.tab.locked::after{content:'🔒';font-size:9px;position:absolute;top:3px;right:4px}
+
+/* ── CONTENT ── */
+.content{flex:1;overflow-y:auto;padding:0 14px 24px;position:relative;z-index:5}
+.content::-webkit-scrollbar{width:3px}
+.content::-webkit-scrollbar-thumb{background:var(--brd);border-radius:2px}
+.panel{display:none}.panel.active{display:block}
+
+/* ── CARD ── */
+.card{background:var(--card);border:1px solid var(--brd);border-radius:var(--r);
+  padding:15px;margin-bottom:11px;position:relative;overflow:hidden}
+.card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,var(--acc),transparent);opacity:.5}
+[data-theme="orel"] .card{border-color:rgba(29,127,84,.13);box-shadow:0 2px 12px rgba(29,127,84,.06)}
+[data-theme="orel"] .card::before{background:linear-gradient(90deg,transparent,#E8559A,transparent);opacity:.4}
+.card-title{font-size:10px;font-weight:700;color:var(--acc);letter-spacing:.9px;
+  text-transform:uppercase;margin-bottom:13px;display:flex;align-items:center;gap:6px}
+
+/* ── INPUT ROWS ── */
+.irow{display:flex;align-items:center;justify-content:space-between;
+  padding:9px 0;border-bottom:1px solid var(--brd)}
+.irow:last-child{border-bottom:none;padding-bottom:0}
+.ilabel{font-size:13px;color:var(--txt2);font-weight:500;flex:1}
+[data-theme="orel"] .ilabel{color:#1d7f54;font-weight:600}
+.ihint{font-size:10px;color:var(--muted);margin-top:2px}
+
+.sel-wrap{position:relative}
+.sel-wrap::after{content:'▾';position:absolute;right:9px;top:50%;transform:translateY(-50%);
+  color:var(--acc);font-size:12px;pointer-events:none}
+select{appearance:none;background:var(--inp);border:1px solid var(--brd);
+  border-radius:8px;color:var(--txt);font-family:'DM Sans',sans-serif;
+  font-size:13px;font-weight:600;padding:8px 26px 8px 11px;
+  cursor:pointer;outline:none;transition:border-color .2s;min-width:110px}
+select:focus{border-color:var(--acc)}
+
+.num-wrap{display:flex;align-items:center;background:var(--inp);
+  border:1px solid var(--brd);border-radius:8px;overflow:hidden}
+.nbtn{width:30px;height:34px;background:none;border:none;color:var(--acc);
+  font-size:17px;font-weight:700;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;transition:background .15s}
+.nbtn:active{background:rgba(128,128,128,.12)}
+input[type=number]{width:68px;background:none;border:none;color:var(--txt);
+  font-family:'DM Mono',monospace;font-size:13px;font-weight:500;
+  text-align:center;outline:none;padding:7px 3px}
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button{-webkit-appearance:none}
+
+.fee-wrap{background:var(--inp);border:1px solid var(--brd);border-radius:8px;
+  display:flex;align-items:center;padding:0 11px;gap:5px;min-width:130px}
+.fee-pre{color:var(--muted);font-size:11px}
+input.fee-inp{background:none;border:none;color:var(--txt);font-family:'DM Mono',monospace;
+  font-size:13px;font-weight:600;width:85px;outline:none;padding:8px 0;text-align:right}
+
+/* ── RESULT ROWS ── */
+.rrow{display:flex;justify-content:space-between;align-items:center;
+  padding:8px 0;border-bottom:1px solid var(--brd)}
+.rrow:last-child{border-bottom:none}
+.rlabel{font-size:12px;color:var(--muted);font-weight:500}
+.rval{font-family:'DM Mono',monospace;font-size:13px;font-weight:500;color:var(--txt2);text-align:right}
+.rval.hi{color:var(--acc2);font-weight:700}
+[data-theme="orel"] .rval.hi{color:#1d7f54}
+.rval.zero{color:var(--muted);opacity:.5}
+
+/* ── TOTAL BLOCK ── */
+.total-block{background:linear-gradient(135deg,#1B4F72,#0e3a5a);
+  border:1px solid #2E86AB;border-radius:var(--r);
+  padding:18px;margin-bottom:11px;position:relative;overflow:hidden}
+[data-theme="orel"] .total-block{background:linear-gradient(135deg,#155e3d,#0e3d28);border-color:#1d7f54}
+.total-block::after{content:'';position:absolute;bottom:-28px;right:-28px;
+  width:90px;height:90px;
+  background:radial-gradient(circle,rgba(255,255,255,.1),transparent);border-radius:50%}
+.tlabel{font-size:10px;color:rgba(255,255,255,.7);font-weight:700;letter-spacing:.9px;text-transform:uppercase;margin-bottom:7px}
+.tamount{font-family:'DM Mono',monospace;font-size:28px;font-weight:700;color:#FFFFFF;letter-spacing:-.5px;margin-bottom:10px;text-shadow:0 1px 4px rgba(0,0,0,.3)}
+.tbreak{font-size:11px;color:rgba(255,255,255,.75);margin-bottom:13px;line-height:1.7}
+.ppill{display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border-radius:20px;
+  font-size:12px;font-weight:700;background:rgba(255,255,255,.18);color:#FFFFFF;
+  border:1px solid rgba(255,255,255,.35);text-shadow:none}
+[data-theme="orel"] .ppill{background:rgba(255,255,255,.18);color:#FFFFFF;border-color:rgba(255,255,255,.35)}
+.ppill.warn{background:rgba(255,255,255,.18);color:#FFFFFF;border-color:rgba(255,255,255,.35)}
+[data-theme="orel"] .ppill.warn{background:rgba(255,255,255,.18);color:#FFFFFF;border-color:rgba(255,255,255,.35)}
+
+/* ── DIG STATUS ── */
+.dstatus{display:flex;align-items:center;gap:8px;padding:9px 11px;
+  border-radius:10px;font-size:12px;font-weight:600;margin-top:9px}
+.dstatus.free{background:rgba(23,165,137,.12);border:1px solid rgba(23,165,137,.25);color:#17A589}
+[data-theme="orel"] .dstatus.free{background:rgba(29,127,84,.1);border-color:rgba(29,127,84,.22);color:#1d7f54}
+.dstatus.paid{background:rgba(127,127,127,.1);border:1px solid rgba(127,127,127,.2);color:var(--muted)}
+
+/* ── SERVICE DIVIDER ── */
+.sub-hdr{font-size:10px;font-weight:700;color:var(--acc);letter-spacing:.7px;
+  text-transform:uppercase;padding:11px 0 9px;border-top:1px solid var(--brd);margin-top:4px}
+
+/* ── PRICELIST TABLE ── */
+.plt{width:100%;border-collapse:collapse;margin-top:4px}
+.plt th{font-size:10px;font-weight:600;color:var(--muted);letter-spacing:.5px;
+  text-transform:uppercase;padding:6px 7px;text-align:left;border-bottom:1px solid var(--brd)}
+.plt td{font-size:12px;color:var(--txt2);padding:9px 7px;border-bottom:1px solid var(--brd)}
+.plt tr:last-child td{border-bottom:none}
+.plt td:first-child{font-weight:700;color:var(--txt)}
+[data-theme="orel"] .plt td:first-child{color:#1d7f54}
+.plt tr:nth-child(even) td{background:rgba(128,128,128,.04)}
+.pbadge{display:inline-block;padding:2px 7px;border-radius:4px;
+  font-size:10px;font-weight:700;background:rgba(46,134,171,.15);color:var(--ice)}
+.pbadge.free{background:rgba(23,165,137,.15);color:#17A589}
+[data-theme="orel"] .pbadge{background:rgba(29,127,84,.1);color:#1d7f54}
+[data-theme="orel"] .pbadge.free{background:rgba(232,85,154,.1);color:#E8559A}
+
+/* ── SETTINGS ── */
+.srow{display:flex;align-items:center;justify-content:space-between;
+  padding:11px 0;border-bottom:1px solid var(--brd)}
+.srow:last-child{border-bottom:none}
+.slabel{font-size:13px;color:var(--txt);font-weight:500}
+.ssub{font-size:10px;color:var(--muted);margin-top:2px}
+input.sval{background:var(--inp);border:1px solid var(--brd);border-radius:8px;
+  color:var(--txt);font-family:'DM Mono',monospace;font-size:12px;font-weight:600;
+  padding:7px 10px;width:108px;text-align:right;outline:none;transition:border-color .2s}
+input.sval:focus{border-color:var(--acc)}
+input.sval:disabled{opacity:.35;cursor:not-allowed}
+.seclabel{font-size:10px;font-weight:700;color:var(--muted);letter-spacing:1px;
+  text-transform:uppercase;margin:15px 0 7px;padding-left:1px}
+
+/* ── LOCK OVERLAY ── */
+.lkovr{position:absolute;inset:0;border-radius:var(--r);
+  background:rgba(13,27,42,.8);backdrop-filter:blur(3px);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:8px;z-index:5;cursor:not-allowed}
+[data-theme="orel"] .lkovr{background:rgba(244,241,237,.85)}
+.lkovr .lkicon{font-size:26px}
+.lkovr .lkmsg{font-size:11px;color:var(--muted);font-weight:500}
+
+/* ── LOCKED BANNER ── */
+.lkbanner{display:flex;align-items:center;gap:10px;
+  background:rgba(231,76,60,.07);border:1px solid rgba(231,76,60,.2);
+  border-radius:var(--r);padding:12px 13px;margin-bottom:11px}
+[data-theme="orel"] .lkbanner{background:rgba(232,85,154,.06);border-color:rgba(232,85,154,.2)}
+.lkb-icon{font-size:18px}
+.lkb-txt{font-size:12px;color:var(--muted);line-height:1.5;flex:1}
+.lkb-txt b{color:var(--txt2);display:block;margin-bottom:2px}
+.lkb-btn{background:linear-gradient(135deg,#2E86AB,#1B4F72);border:none;border-radius:8px;
+  color:#FFF;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:700;
+  padding:7px 13px;cursor:pointer;white-space:nowrap;transition:opacity .2s}
+[data-theme="orel"] .lkb-btn{background:linear-gradient(135deg,#1d7f54,#145235)}
+.lkb-btn:hover{opacity:.85}
+
+/* ── MODAL ── */
+.mbk{position:fixed;inset:0;z-index:100;background:rgba(7,16,26,.9);
+  backdrop-filter:blur(6px);display:flex;align-items:center;justify-content:center;
+  padding:20px;opacity:0;pointer-events:none;transition:opacity .25s}
+.mbk.open{opacity:1;pointer-events:all}
+.modal{background:#0F1E2E;border:1px solid var(--brd);border-radius:20px;
+  padding:26px 22px;width:100%;max-width:330px;
+  transform:translateY(14px) scale(.97);transition:transform .25s;position:relative;overflow:hidden}
+[data-theme="orel"] .modal{background:#FDFAF7;border-color:rgba(29,127,84,.18)}
+.mbk.open .modal{transform:none}
+.modal::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,#2E86AB,#17A589)}
+[data-theme="orel"] .modal::before{background:linear-gradient(90deg,#1d7f54,#E8559A)}
+.mlogo{text-align:center;margin-bottom:5px;font-size:30px}
+.mtitle{text-align:center;font-size:16px;font-weight:700;
+  background:linear-gradient(135deg,var(--ice),var(--acc));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:4px}
+[data-theme="orel"] .mtitle{background:linear-gradient(135deg,#1d7f54,#E8559A);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.msub{text-align:center;font-size:11px;color:var(--muted);margin-bottom:20px}
+.flabel{font-size:10px;font-weight:700;color:var(--acc);letter-spacing:.5px;
+  text-transform:uppercase;margin-bottom:5px}
+[data-theme="orel"] .flabel{color:#1d7f54}
+.fwrap{position:relative;margin-bottom:13px}
+.fwrap input{width:100%;background:var(--inp);border:1px solid var(--brd);
+  border-radius:10px;color:var(--txt);font-family:'DM Sans',sans-serif;
+  font-size:14px;padding:10px 13px;outline:none;transition:border-color .2s}
+.fwrap input:focus{border-color:var(--acc)}
+[data-theme="orel"] .fwrap input:focus{border-color:#1d7f54}
+.eyebtn{position:absolute;right:11px;top:50%;transform:translateY(-50%);
+  background:none;border:none;color:var(--muted);cursor:pointer;font-size:15px;line-height:1}
+.eyebtn:hover{color:var(--txt2)}
+.merr{font-size:12px;color:#FF6B6B;margin-bottom:12px;min-height:17px;text-align:center}
+.mbtn{width:100%;padding:12px;background:linear-gradient(135deg,#2E86AB,#1B4F72);
+  border:none;border-radius:10px;color:#FFF;font-family:'DM Sans',sans-serif;
+  font-size:14px;font-weight:700;cursor:pointer;transition:opacity .2s;margin-bottom:9px}
+[data-theme="orel"] .mbtn{background:linear-gradient(135deg,#1d7f54,#145235)}
+.mbtn:hover{opacity:.88}
+.mcancel{width:100%;padding:9px;background:none;border:1px solid var(--brd);
+  border-radius:10px;color:var(--muted);font-family:'DM Sans',sans-serif;
+  font-size:13px;font-weight:600;cursor:pointer;transition:all .2s}
+.mcancel:hover{border-color:var(--acc);color:var(--txt2)}
+[data-theme="orel"] .mcancel:hover{border-color:#1d7f54;color:#1d7f54}
+.mswitch{text-align:center;font-size:12px;color:var(--muted);margin-top:13px}
+.mswitch a{color:var(--acc);cursor:pointer;font-weight:600}
+[data-theme="orel"] .mswitch a{color:#1d7f54}
+.mswitch a:hover{color:var(--acc2)}
+[data-theme="orel"] .mswitch a:hover{color:#E8559A}
+
+/* ── SAVE BADGE ── */
+.sbadge{font-size:10px;font-weight:600;color:var(--acc2);
+  background:rgba(23,165,137,.12);border:1px solid rgba(23,165,137,.3);
+  padding:3px 8px;border-radius:20px;opacity:0;transform:translateY(-3px);
+  transition:opacity .3s,transform .3s;white-space:nowrap}
+[data-theme="orel"] .sbadge{color:#1d7f54;background:rgba(29,127,84,.1);border-color:rgba(29,127,84,.25)}
+.sbadge.vis{opacity:1;transform:translateY(0)}
+
+/* ── NOTES ── */
+.nlist{display:flex;flex-direction:column;gap:7px;margin-bottom:11px}
+.nitem{display:flex;align-items:flex-start;gap:7px;background:var(--inp);
+  border:1px solid var(--brd);border-radius:10px;padding:9px 11px;transition:border-color .2s}
+.nitem:focus-within{border-color:var(--acc)}
+[data-theme="orel"] .nitem:focus-within{border-color:#1d7f54}
+.nicon{font-size:13px;margin-top:1px;flex-shrink:0}
+.ntxt{flex:1;background:none;border:none;outline:none;color:var(--txt);
+  font-family:'DM Sans',sans-serif;font-size:12px;line-height:1.5;resize:none;
+  min-height:18px;overflow:hidden}
+.ntxt:disabled{color:var(--muted);cursor:not-allowed}
+.ndel{background:none;border:none;color:var(--muted);font-size:15px;cursor:pointer;
+  padding:0 2px;flex-shrink:0;line-height:1;transition:color .15s}
+.ndel:hover{color:#E8559A}
+.nadd{width:100%;padding:10px;border-radius:10px;background:none;
+  border:1px dashed rgba(128,128,128,.3);color:var(--acc);font-family:'DM Sans',sans-serif;
+  font-size:12px;font-weight:600;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;gap:5px;transition:all .2s}
+[data-theme="orel"] .nadd{border-color:rgba(29,127,84,.3);color:#1d7f54}
+.nadd:hover{background:rgba(128,128,128,.06);border-color:var(--acc)}
+[data-theme="orel"] .nadd:hover{background:rgba(29,127,84,.06);border-color:#1d7f54}
+.nadd:disabled{opacity:.35;cursor:not-allowed}
+.nrst{flex:0 0 auto;padding:10px 16px;border-radius:10px;background:rgba(231,76,60,.08);
+  border:1px solid rgba(231,76,60,.35);color:#E74C3C;font-family:'DM Sans',sans-serif;
+  font-size:14px;font-weight:700;cursor:pointer;transition:all .2s;line-height:1}
+.nrst:hover{background:rgba(231,76,60,.16);border-color:#E74C3C}
+.nrst:disabled{opacity:.35;cursor:not-allowed}
+[data-theme="orel"] .nrst{background:rgba(231,76,60,.06);border-color:rgba(231,76,60,.3);color:#E74C3C}
+.npreview{font-size:12px;color:var(--txt2);line-height:1.85}
+.npreview .nl{display:flex;gap:6px}
+
+/* ── ANIMATIONS ── */
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.card{animation:fadeUp .3s ease both}
+.card:nth-child(2){animation-delay:.04s}.card:nth-child(3){animation-delay:.08s}
+.card:nth-child(4){animation-delay:.12s}.total-block{animation:fadeUp .3s ease .08s both}
+.safe{height:20px}
+
+@media(min-width:421px){
+  body{padding:20px 0;background:#07101A}
+  [data-theme="orel"] body{background:#E4DFD8}
+  .phone{min-height:auto;border-radius:40px;overflow:hidden;
+    box-shadow:0 40px 80px rgba(0,0,0,.7),0 0 0 1px rgba(46,134,171,.2)}
+  [data-theme="orel"] .phone{box-shadow:0 40px 80px rgba(0,0,0,.15),0 0 0 1px rgba(29,127,84,.15)}
+  .content{max-height:75vh}
+}
+</style>
+</head>
+<body>
+<div class="phone">
+
+<!-- ══ TOPBAR ══ -->
+<div class="topbar">
+  <div class="topbar-brand">
+    <!-- SVG logo derived from brand: cloud + face shape in green/pink -->
+    <svg class="topbar-logo" viewBox="0 0 80 70" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M62 28c0-1-.1-2-.3-3A14 14 0 0 0 50 14a14 14 0 0 0-7.2 2A12 12 0 0 0 20 25a12 12 0 0 0 .5 3.5A10 10 0 0 0 14 38a10 10 0 0 0 10 10h34a10 10 0 0 0 10-10 10 10 0 0 0-6-9z" fill="none" stroke="#1d7f54" stroke-width="4" stroke-linejoin="round"/>
+      <ellipse cx="32" cy="36" rx="5" ry="3.5" fill="#1d7f54"/>
+      <ellipse cx="48" cy="36" rx="5" ry="3.5" fill="#1d7f54"/>
+      <path d="M30 31 q2-3 4 0" stroke="#1d7f54" stroke-width="2" fill="none" stroke-linecap="round"/>
+      <path d="M46 31 q2-3 4 0" stroke="#1d7f54" stroke-width="2" fill="none" stroke-linecap="round"/>
+      <circle cx="34" cy="43" r="2.5" fill="#E8559A"/>
+      <circle cx="46" cy="43" r="2.5" fill="#E8559A"/>
+    </svg>
+    <div>
+      <div class="topbar-title">OrelRelios Embroidery Cal</div>
+      <div class="topbar-sub">Custom Patch Price Calculator</div>
+    </div>
+  </div>
+  <div class="topbar-right">
+    <div class="theme-wrap">
+      <div class="tdot t-dark active" id="td-dark"  onclick="setTheme('dark')"  title="Dark"></div>
+      <div class="tdot t-orel"        id="td-orel"  onclick="setTheme('orel')"  title="OrelRelios"></div>
+    </div>
+    <div class="login-btn" id="btn-login-top" onclick="openLogin()">🔑 Masuk</div>
+    <div class="user-chip" id="chip-user" style="display:none" onclick="openUserMenu()">
+      <div class="uavatar" id="chip-av">?</div>
+      <span id="chip-name">—</span>
+    </div>
+  </div>
+</div>
+
+<!-- ══ TABS ══ -->
+<div class="tabs">
+  <div class="tab active" onclick="switchTab('calc')">🧮 Kalkulator</div>
+  <div class="tab" onclick="switchTab('pricelist')">📋 Pricelist</div>
+  <div class="tab locked" id="tab-settings" onclick="handleSettingsTab()">⚙️ Tarif</div>
+</div>
+
+<div class="content">
+
+<!-- ══════════ PANEL: KALKULATOR ══════════ -->
+<div class="panel active" id="panel-calc">
+
+  <div class="card">
+    <div class="card-title">📋 Input Order</div>
+    <div class="irow">
+      <div><div class="ilabel">Size</div><div class="ihint">Ukuran patch</div></div>
+      <div class="sel-wrap">
+        <select id="inp-size" onchange="calc()">
+          <option>Small</option><option>Medium</option><option>Large</option>
+        </select>
+      </div>
+    </div>
+    <div class="irow">
+      <div><div class="ilabel">Stitch Count</div><div class="ihint">Total stitch desain</div></div>
+      <div class="num-wrap">
+        <button class="nbtn" onclick="step('inp-stitch',-500)">−</button>
+        <input type="number" id="inp-stitch" value="3000" min="0" step="500" oninput="calc()">
+        <button class="nbtn" onclick="step('inp-stitch',500)">+</button>
+      </div>
+    </div>
+    <div class="irow">
+      <div><div class="ilabel">Colors</div><div class="ihint">Jumlah warna benang</div></div>
+      <div class="num-wrap">
+        <button class="nbtn" onclick="step('inp-colors',-1)">−</button>
+        <input type="number" id="inp-colors" value="2" min="1" step="1" oninput="calc()">
+        <button class="nbtn" onclick="step('inp-colors',1)">+</button>
+      </div>
+    </div>
+    <div class="irow">
+      <div><div class="ilabel">Quantity</div><div class="ihint">Jumlah order (pcs)</div></div>
+      <div class="num-wrap">
+        <button class="nbtn" onclick="step('inp-qty',-1)">−</button>
+        <input type="number" id="inp-qty" value="10" min="5" step="1" oninput="calc()">
+        <button class="nbtn" onclick="step('inp-qty',1)">+</button>
+      </div>
+    </div>
+    <div class="irow">
+      <div><div class="ilabel">Digitizing</div><div class="ihint">Tingkat kerumitan</div></div>
+      <div class="sel-wrap">
+        <select id="inp-dig" onchange="calc()">
+          <option>Simple</option><option>Medium</option><option>Complex</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">💰 Breakdown per Piece</div>
+    <div class="rrow"><span class="rlabel">Base Price</span><span class="rval" id="r-base">Rp 0</span></div>
+    <div class="rrow"><span class="rlabel">Included Stitch</span><span class="rval" id="r-incl-s">0</span></div>
+    <div class="rrow"><span class="rlabel">Extra Stitch</span><span class="rval" id="r-extra-s">0</span></div>
+    <div class="rrow"><span class="rlabel">Extra Stitch Cost</span><span class="rval" id="r-scost">Rp 0</span></div>
+    <div class="rrow"><span class="rlabel">Included Colors</span><span class="rval" id="r-incl-c">0</span></div>
+    <div class="rrow"><span class="rlabel">Extra Colors</span><span class="rval" id="r-extra-c">0</span></div>
+    <div class="rrow"><span class="rlabel">Color Rate</span><span class="rval" id="r-crate">Rp 0</span></div>
+    <div class="rrow"><span class="rlabel">Color Surcharge</span><span class="rval" id="r-csurch">Rp 0</span></div>
+    <div class="rrow" style="border-top:1px solid var(--brd);margin-top:5px;padding-top:9px;border-bottom:none">
+      <span class="rlabel" style="color:var(--txt);font-weight:700">Price / Piece</span>
+      <span class="rval hi" id="r-ppc" style="font-size:15px">Rp 0</span>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">🖥️ Digitizing & Service Fee</div>
+
+    <div class="rrow"><span class="rlabel">Kategori</span><span class="rval" id="r-dcat">—</span></div>
+    <div class="rrow"><span class="rlabel">Est. Min</span><span class="rval" id="r-dmin">—</span></div>
+    <div class="rrow"><span class="rlabel">Est. Max</span><span class="rval" id="r-dmax">—</span></div>
+    <div id="r-dstatus"></div>
+
+    <!-- Digitizing Fee input -->
+    <div class="irow" style="margin-top:8px">
+      <div><div class="ilabel">Digitizing Fee</div><div class="ihint">0 = GRATIS</div></div>
+      <div class="fee-wrap"><span class="fee-pre">Rp</span>
+        <input class="fee-inp" type="number" id="inp-dfee" value="0" min="0" oninput="calc()">
+      </div>
+    </div>
+
+    <!-- Setup & Service -->
+    <div class="sub-hdr">⚙️ Setup & Service</div>
+
+    <div class="irow" style="padding-top:0">
+      <div><div class="ilabel">Setup Fee</div><div class="ihint">Persiapan mesin & frame</div></div>
+      <div class="fee-wrap"><span class="fee-pre">Rp</span>
+        <input class="fee-inp" type="number" id="inp-setup" value="0" min="0" oninput="calc()">
+      </div>
+    </div>
+    <div class="irow">
+      <div><div class="ilabel">Embroiderer Service</div><div class="ihint">Jasa operator bordir</div></div>
+      <div class="fee-wrap"><span class="fee-pre">Rp</span>
+        <input class="fee-inp" type="number" id="inp-emb" value="0" min="0" oninput="calc()">
+      </div>
+    </div>
+    <div class="irow">
+      <div><div class="ilabel">Biaya Packaging</div><div class="ihint">Bahan & packing produk</div></div>
+      <div class="fee-wrap"><span class="fee-pre">Rp</span>
+        <input class="fee-inp" type="number" id="inp-pack" value="0" min="0" oninput="calc()">
+      </div>
+    </div>
+    <div class="irow">
+      <div><div class="ilabel">Ongkos Kirim</div><div class="ihint">Biaya pengiriman</div></div>
+      <div class="fee-wrap"><span class="fee-pre">Rp</span>
+        <input class="fee-inp" type="number" id="inp-ship" value="0" min="0" oninput="calc()">
+      </div>
+    </div>
+
+    <!-- Service subtotal -->
+    <div style="margin-top:8px;padding-top:10px;border-top:1px solid var(--brd)">
+      <div class="rrow"><span class="rlabel">Setup Fee</span><span class="rval" id="r-setup">Rp 0</span></div>
+      <div class="rrow"><span class="rlabel">Embroiderer</span><span class="rval" id="r-emb">Rp 0</span></div>
+      <div class="rrow"><span class="rlabel">Packaging</span><span class="rval" id="r-pack">Rp 0</span></div>
+      <div class="rrow"><span class="rlabel">Ongkos Kirim</span><span class="rval" id="r-ship">Rp 0</span></div>
+      <div class="rrow" style="border-bottom:none">
+        <span class="rlabel" style="color:var(--txt);font-weight:700">Total Service</span>
+        <span class="rval hi" id="r-svc">Rp 0</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOTAL -->
+  <div class="total-block">
+    <div class="tlabel">📦 Total Order</div>
+    <div class="tamount" id="r-total">Rp 0</div>
+    <div class="tbreak" id="r-tbreak">—</div>
+    <div class="ppill" id="r-pay">⚠️ FULL PAYMENT</div>
+  </div>
+  <div class="safe"></div>
+</div><!-- end panel-calc -->
+
+<!-- ══════════ PANEL: PRICELIST ══════════ -->
+<div class="panel" id="panel-pricelist">
+  <div class="card">
+    <div class="card-title">📏 Size & Base Price</div>
+    <table class="plt">
+      <tr><th>Size</th><th>Dimensi</th><th>Base Price</th><th>Incl. Stitch</th></tr>
+      <tr><td>Small</td><td>2.5–5 cm</td><td>Rp 7.000</td><td>3k stitch</td></tr>
+      <tr><td>Medium</td><td>5–9 cm</td><td>Rp 14.000</td><td>6k stitch</td></tr>
+      <tr><td>Large</td><td>Max 22.5×9</td><td>Rp 30.000</td><td>15k stitch</td></tr>
+    </table>
+    <div style="font-size:10px;color:var(--muted);margin-top:9px">Extra stitch: +Rp 1.500 / 1.000 stitch</div>
+  </div>
+  <div class="card">
+    <div class="card-title">🎨 Color Surcharge</div>
+    <table class="plt">
+      <tr><th>Size</th><th>Incl. Warna</th><th>Extra Rate</th></tr>
+      <tr><td>Small</td><td>2 warna</td><td>Rp 1.000/warna</td></tr>
+      <tr><td>Medium</td><td>3 warna</td><td>Rp 1.500/warna</td></tr>
+      <tr><td>Large</td><td>4 warna</td><td>Rp 2.000/warna</td></tr>
+    </table>
+  </div>
+  <div class="card">
+    <div class="card-title">🖥️ Digitizing Fee</div>
+    <table class="plt">
+      <tr><th>Kategori</th><th>Min</th><th>Max</th></tr>
+      <tr><td>Simple</td><td>Rp 10.000</td><td>Rp 25.000</td></tr>
+      <tr><td>Medium</td><td>Rp 25.000</td><td>Rp 50.000</td></tr>
+      <tr><td>Complex</td><td>Rp 50.000</td><td>Rp 100.000+</td></tr>
+    </table>
+  </div>
+  <div class="card">
+    <div class="card-title">⚙️ Setup & Service Fee</div>
+    <table class="plt">
+      <tr><th>Item</th><th>Keterangan</th></tr>
+      <tr><td>Setup Fee</td><td>Persiapan mesin & frame</td></tr>
+      <tr><td>Embroiderer</td><td>Jasa operator bordir</td></tr>
+      <tr><td>Packaging</td><td>Bahan & packing produk</td></tr>
+      <tr><td>Ongkos Kirim</td><td>Biaya pengiriman</td></tr>
+    </table>
+    <div style="font-size:10px;color:var(--muted);margin-top:9px">Nominal input manual di Kalkulator</div>
+  </div>
+  <div class="card">
+    <div class="card-title">🆓 Free Digitizing</div>
+    <table class="plt">
+      <tr><th>Kondisi</th><th>Threshold</th><th>Status</th></tr>
+      <tr><td>Small</td><td>≥ 10 pcs</td><td><span class="pbadge free">FREE</span></td></tr>
+      <tr><td>Sm + Med</td><td>≥ 25 pcs</td><td><span class="pbadge free">FREE</span></td></tr>
+      <tr><td>Large</td><td>Selalu</td><td><span class="pbadge">BERBAYAR</span></td></tr>
+    </table>
+  </div>
+  <div class="card">
+    <div class="card-title">📦 Order Rules</div>
+    <table class="plt">
+      <tr><th>Rule</th><th>Threshold</th><th>Detail</th></tr>
+      <tr><td>Min Order</td><td>5 pcs</td><td>—</td></tr>
+      <tr><td>Full Pay</td><td>&lt; 26 pcs</td><td>100% upfront</td></tr>
+      <tr><td>DP 50%</td><td>≥ 26 pcs</td><td>50% dulu</td></tr>
+      <tr><td>Toleransi</td><td>±5–10%</td><td>Normal</td></tr>
+    </table>
+  </div>
+  <div class="card">
+    <div class="card-title">📌 Catatan Penting</div>
+    <div class="npreview" id="notes-preview"></div>
+  </div>
+  <div class="safe"></div>
+</div><!-- end panel-pricelist -->
+
+<!-- ══════════ PANEL: SETTINGS ══════════ -->
+<div class="panel" id="panel-settings">
+
+  <div class="lkbanner" id="lkbanner">
+    <div class="lkb-icon">🔒</div>
+    <div class="lkb-txt"><b>Tarif terkunci</b>Login untuk mengubah tarif & catatan</div>
+    <button class="lkb-btn" onclick="openLogin()">Masuk</button>
+  </div>
+
+  <div class="seclabel">Base Price (Rp)</div>
+  <div class="card" style="position:relative">
+    <div class="lkovr sk"><div class="lkicon">🔒</div><div class="lkmsg">Login untuk edit</div></div>
+    <div class="srow"><div><div class="slabel">Small</div><div class="ssub">2.5–5 cm</div></div><input class="sval" type="number" id="s-bp-sm" value="7000" oninput="calc()" disabled></div>
+    <div class="srow"><div><div class="slabel">Medium</div><div class="ssub">5–9 cm</div></div><input class="sval" type="number" id="s-bp-md" value="14000" oninput="calc()" disabled></div>
+    <div class="srow"><div><div class="slabel">Large</div><div class="ssub">Max 22.5×9 cm</div></div><input class="sval" type="number" id="s-bp-lg" value="30000" oninput="calc()" disabled></div>
+  </div>
+
+  <div class="seclabel">Included Stitch</div>
+  <div class="card" style="position:relative">
+    <div class="lkovr sk"><div class="lkicon">🔒</div><div class="lkmsg">Login untuk edit</div></div>
+    <div class="srow"><div><div class="slabel">Small</div></div><input class="sval" type="number" id="s-is-sm" value="3000" oninput="calc()" disabled></div>
+    <div class="srow"><div><div class="slabel">Medium</div></div><input class="sval" type="number" id="s-is-md" value="6000" oninput="calc()" disabled></div>
+    <div class="srow"><div><div class="slabel">Large</div></div><input class="sval" type="number" id="s-is-lg" value="15000" oninput="calc()" disabled></div>
+  </div>
+
+  <div class="seclabel">Extra Stitch Rate</div>
+  <div class="card" style="position:relative">
+    <div class="lkovr sk"><div class="lkicon">🔒</div><div class="lkmsg">Login untuk edit</div></div>
+    <div class="srow"><div><div class="slabel">Rate / 1.000 stitch</div><div class="ssub">Berlaku semua ukuran</div></div><input class="sval" type="number" id="s-er" value="1500" oninput="calc()" disabled></div>
+  </div>
+
+  <div class="seclabel">Included Colors & Rate</div>
+  <div class="card" style="position:relative">
+    <div class="lkovr sk"><div class="lkicon">🔒</div><div class="lkmsg">Login untuk edit</div></div>
+    <div class="srow"><div><div class="slabel">Small — Incl. Colors</div></div><input class="sval" type="number" id="s-ic-sm" value="2" oninput="calc()" disabled></div>
+    <div class="srow"><div><div class="slabel">Small — Color Rate</div></div><input class="sval" type="number" id="s-cr-sm" value="1000" oninput="calc()" disabled></div>
+    <div class="srow"><div><div class="slabel">Medium — Incl. Colors</div></div><input class="sval" type="number" id="s-ic-md" value="3" oninput="calc()" disabled></div>
+    <div class="srow"><div><div class="slabel">Medium — Color Rate</div></div><input class="sval" type="number" id="s-cr-md" value="1500" oninput="calc()" disabled></div>
+    <div class="srow"><div><div class="slabel">Large — Incl. Colors</div></div><input class="sval" type="number" id="s-ic-lg" value="4" oninput="calc()" disabled></div>
+    <div class="srow"><div><div class="slabel">Large — Color Rate</div></div><input class="sval" type="number" id="s-cr-lg" value="2000" oninput="calc()" disabled></div>
+  </div>
+
+  <div class="seclabel">Digitizing Fee Range</div>
+  <div class="card" style="position:relative">
+    <div class="lkovr sk"><div class="lkicon">🔒</div><div class="lkmsg">Login untuk edit</div></div>
+    <div class="srow"><div><div class="slabel">Simple — Min</div></div><input class="sval" type="number" id="s-dm-si" value="10000" oninput="calc()" disabled></div>
+    <div class="srow"><div><div class="slabel">Simple — Max</div></div><input class="sval" type="number" id="s-dx-si" value="25000" oninput="calc()" disabled></div>
+    <div class="srow"><div><div class="slabel">Medium — Min</div></div><input class="sval" type="number" id="s-dm-md" value="25000" oninput="calc()" disabled></div>
+    <div class="srow"><div><div class="slabel">Medium — Max</div></div><input class="sval" type="number" id="s-dx-md" value="50000" oninput="calc()" disabled></div>
+    <div class="srow"><div><div class="slabel">Complex — Min</div></div><input class="sval" type="number" id="s-dm-cx" value="50000" oninput="calc()" disabled></div>
+    <div class="srow"><div><div class="slabel">Complex — Max</div></div><input class="sval" type="number" id="s-dx-cx" value="100000" oninput="calc()" disabled></div>
+  </div>
+
+  <div class="seclabel">Free Digitizing Threshold</div>
+  <div class="card" style="position:relative">
+    <div class="lkovr sk"><div class="lkicon">🔒</div><div class="lkmsg">Login untuk edit</div></div>
+    <div class="srow"><div><div class="slabel">Small only (pcs)</div><div class="ssub">qty ≥ X → free Small</div></div><input class="sval" type="number" id="s-fd-sm" value="10" oninput="calc()" disabled></div>
+    <div class="srow"><div><div class="slabel">Small & Medium (pcs)</div><div class="ssub">qty ≥ X → free Sm+Med</div></div><input class="sval" type="number" id="s-fd-sm2" value="25" oninput="calc()" disabled></div>
+  </div>
+
+  <div class="seclabel">Catatan Penting</div>
+  <div class="card" style="position:relative">
+    <div class="lkovr sk"><div class="lkicon">🔒</div><div class="lkmsg">Login untuk edit</div></div>
+    <div class="card-title" style="justify-content:space-between">
+      <span>📌 Kelola Catatan</span>
+      <div style="display:flex;align-items:center;gap:7px">
+        <span class="sbadge" id="sbadge">✓ Tersimpan</span>
+        <span id="ncnt" style="font-size:10px;color:var(--muted);font-weight:400;text-transform:none;letter-spacing:0"></span>
+      </div>
+    </div>
+    <div class="nlist" id="nlist"></div>
+    <div style="display:flex;gap:7px;margin-top:3px">
+      <button class="nadd" id="btn-nadd" onclick="addNote()" style="flex:1" disabled>＋ Tambah Catatan</button>
+      <button class="nrst" id="btn-nrst" onclick="resetNotes()" disabled title="Reset ke default">↺ Reset</button>
+    </div>
+  </div>
+  <div class="safe"></div>
+</div><!-- end panel-settings -->
+
+</div><!-- end .content -->
+</div><!-- end .phone -->
+
+<!-- ══ LOGIN MODAL ══ -->
+<div class="mbk" id="m-login">
+  <div class="modal">
+    <div class="mlogo">🧵</div>
+    <div class="mtitle">OrelRelios</div>
+    <div class="msub">Masuk untuk mengelola tarif & catatan</div>
+    <div class="flabel">Username</div>
+    <div class="fwrap"><input type="text" id="l-user" placeholder="Username" onkeydown="if(event.key==='Enter')document.getElementById('l-pass').focus()"></div>
+    <div class="flabel">Password</div>
+    <div class="fwrap">
+      <input type="password" id="l-pass" placeholder="Password" onkeydown="if(event.key==='Enter')doLogin()">
+      <button class="eyebtn" onclick="toggleEye('l-pass',this)">👁</button>
+    </div>
+    <div class="merr" id="l-err"></div>
+    <button class="mbtn" onclick="doLogin()">Masuk</button>
+    <button class="mcancel" onclick="closeM('m-login')">Batal</button>
+    <div class="mswitch">Belum punya akun? <a onclick="openReg()">Daftar</a></div>
+  </div>
+</div>
+
+<!-- ══ REGISTER MODAL ══ -->
+<div class="mbk" id="m-reg">
+  <div class="modal">
+    <div class="mlogo">✨</div>
+    <div class="mtitle">Buat Akun</div>
+    <div class="msub">Tersimpan lokal di perangkat ini</div>
+    <div class="flabel">Username</div>
+    <div class="fwrap"><input type="text" id="r-user" placeholder="Pilih username" onkeydown="if(event.key==='Enter')document.getElementById('r-pass').focus()"></div>
+    <div class="flabel">Password</div>
+    <div class="fwrap">
+      <input type="password" id="r-pass" placeholder="Buat password" onkeydown="if(event.key==='Enter')document.getElementById('r-pass2').focus()">
+      <button class="eyebtn" onclick="toggleEye('r-pass',this)">👁</button>
+    </div>
+    <div class="flabel">Konfirmasi</div>
+    <div class="fwrap">
+      <input type="password" id="r-pass2" placeholder="Ulangi password" onkeydown="if(event.key==='Enter')doReg()">
+      <button class="eyebtn" onclick="toggleEye('r-pass2',this)">👁</button>
+    </div>
+    <div class="merr" id="r-err"></div>
+    <button class="mbtn" onclick="doReg()">Buat Akun</button>
+    <button class="mcancel" onclick="closeM('m-reg')">Batal</button>
+    <div class="mswitch">Sudah punya akun? <a onclick="openLogin()">Masuk</a></div>
+  </div>
+</div>
+
+<!-- ══ USER MENU MODAL ══ -->
+<div class="mbk" id="m-user">
+  <div class="modal">
+    <div class="mlogo" id="um-av">👤</div>
+    <div class="mtitle" id="um-name">—</div>
+    <div class="msub">Akun aktif</div>
+    <button class="mbtn" style="background:linear-gradient(135deg,#1a6b3a,#145a32)" onclick="openChPass()">🔑 Ganti Password</button>
+    <button class="mbtn" style="background:linear-gradient(135deg,#922b21,#7b241c)" onclick="doLogout()">🚪 Keluar</button>
+    <button class="mcancel" onclick="closeM('m-user')">Tutup</button>
+  </div>
+</div>
+
+<!-- ══ CHANGE PASSWORD MODAL ══ -->
+<div class="mbk" id="m-chpass">
+  <div class="modal">
+    <div class="mlogo">🔑</div>
+    <div class="mtitle">Ganti Password</div>
+    <div class="msub">Masukkan password lama dan baru</div>
+    <div class="flabel">Password Lama</div>
+    <div class="fwrap"><input type="password" id="cp-old"><button class="eyebtn" onclick="toggleEye('cp-old',this)">👁</button></div>
+    <div class="flabel">Password Baru</div>
+    <div class="fwrap"><input type="password" id="cp-new" placeholder="Min 4 karakter"><button class="eyebtn" onclick="toggleEye('cp-new',this)">👁</button></div>
+    <div class="flabel">Konfirmasi Baru</div>
+    <div class="fwrap"><input type="password" id="cp-new2" onkeydown="if(event.key==='Enter')doChPass()"><button class="eyebtn" onclick="toggleEye('cp-new2',this)">👁</button></div>
+    <div class="merr" id="cp-err"></div>
+    <button class="mbtn" onclick="doChPass()">Simpan</button>
+    <button class="mcancel" onclick="closeM('m-chpass')">Batal</button>
+  </div>
+</div>
+
+<script>
+// ═══════════ THEME ═══════════
+const TK='orelrelios_theme';
+function setTheme(t){
+  document.documentElement.setAttribute('data-theme',t==='dark'?'':t);
+  localStorage.setItem(TK,t);
+  document.querySelectorAll('.tdot').forEach(d=>d.classList.remove('active'));
+  const d=document.getElementById('td-'+t);if(d)d.classList.add('active');
+}
+(()=>{const s=localStorage.getItem(TK)||'dark';setTheme(s)})();
+
+// ═══════════ AUTH ═══════════
+const AK='orelrelios_users',SK='orelrelios_session';
+function hp(p){let h=0;for(let i=0;i<p.length;i++)h=Math.imul(31,h)+p.charCodeAt(i)|0;return h.toString(36)}
+function gu(){try{return JSON.parse(localStorage.getItem(AK)||'{}')}catch{return{}}}
+function su(u){localStorage.setItem(AK,JSON.stringify(u))}
+function gs(){try{return localStorage.getItem(SK)||null}catch{return null}}
+function ss(u){localStorage.setItem(SK,u)}
+function cs(){localStorage.removeItem(SK)}
+
+let CU=gs();
+
+function openM(id){document.getElementById(id).classList.add('open')}
+function closeM(id){
+  document.getElementById(id).classList.remove('open');
+  document.querySelectorAll('#'+id+' input').forEach(i=>i.value='');
+  document.querySelectorAll('#'+id+' .merr').forEach(e=>e.textContent='');
+}
+function openLogin(){closeM('m-reg');openM('m-login');setTimeout(()=>document.getElementById('l-user').focus(),300)}
+function openReg(){closeM('m-login');openM('m-reg');setTimeout(()=>document.getElementById('r-user').focus(),300)}
+function openUserMenu(){
+  document.getElementById('um-name').textContent=CU;
+  document.getElementById('um-av').textContent=CU?CU[0].toUpperCase():'👤';
+  openM('m-user');
+}
+function openChPass(){closeM('m-user');openM('m-chpass')}
+function toggleEye(id,btn){const el=document.getElementById(id);el.type=el.type==='password'?'text':'password';btn.textContent=el.type==='password'?'👁':'🙈'}
+
+function doLogin(){
+  const u=document.getElementById('l-user').value.trim();
+  const p=document.getElementById('l-pass').value;
+  const err=document.getElementById('l-err');
+  if(!u||!p){err.textContent='Username dan password wajib diisi.';return}
+  const us=gu();
+  if(!us[u]){err.textContent='Username tidak ditemukan.';return}
+  if(us[u].pass!==hp(p)){err.textContent='Password salah.';return}
+  CU=u;ss(u);closeM('m-login');updateAuthUI();unlock();showToast('🔓 Selamat datang, '+u+'!');
+}
+function doReg(){
+  const u=document.getElementById('r-user').value.trim();
+  const p=document.getElementById('r-pass').value;
+  const p2=document.getElementById('r-pass2').value;
+  const err=document.getElementById('r-err');
+  if(!u||!p){err.textContent='Semua kolom wajib diisi.';return}
+  if(u.length<3){err.textContent='Username minimal 3 karakter.';return}
+  if(p.length<4){err.textContent='Password minimal 4 karakter.';return}
+  if(p!==p2){err.textContent='Konfirmasi tidak cocok.';return}
+  const us=gu();
+  if(us[u]){err.textContent='Username sudah digunakan.';return}
+  us[u]={pass:hp(p)};su(us);CU=u;ss(u);
+  closeM('m-reg');updateAuthUI();unlock();showToast('✅ Akun dibuat & login berhasil!');
+}
+function doLogout(){CU=null;cs();closeM('m-user');updateAuthUI();lock();switchTab('calc');showToast('👋 Berhasil keluar')}
+function doChPass(){
+  const o=document.getElementById('cp-old').value;
+  const n=document.getElementById('cp-new').value;
+  const n2=document.getElementById('cp-new2').value;
+  const err=document.getElementById('cp-err');
+  if(!o||!n||!n2){err.textContent='Semua kolom wajib.';return}
+  if(n.length<4){err.textContent='Password baru min 4 karakter.';return}
+  if(n!==n2){err.textContent='Konfirmasi tidak cocok.';return}
+  const us=gu();
+  if(us[CU].pass!==hp(o)){err.textContent='Password lama salah.';return}
+  us[CU].pass=hp(n);su(us);closeM('m-chpass');showToast('✅ Password berhasil diubah');
+}
+
+function updateAuthUI(){
+  const li=!!CU;
+  document.getElementById('btn-login-top').style.display=li?'none':'flex';
+  document.getElementById('chip-user').style.display=li?'flex':'none';
+  if(li){document.getElementById('chip-av').textContent=CU[0].toUpperCase();document.getElementById('chip-name').textContent=CU}
+  const ts=document.getElementById('tab-settings');
+  li?ts.classList.remove('locked'):ts.classList.add('locked');
+}
+function unlock(){
+  document.getElementById('lkbanner').style.display='none';
+  document.querySelectorAll('.sk').forEach(e=>e.style.display='none');
+  document.querySelectorAll('.sval').forEach(e=>e.disabled=false);
+  document.getElementById('btn-nadd').disabled=false;
+  document.getElementById('btn-nrst').disabled=false;
+  document.querySelectorAll('#nlist .ntxt').forEach(t=>t.disabled=false);
+  document.querySelectorAll('#nlist .ndel').forEach(b=>b.disabled=false);
+}
+function lock(){
+  document.getElementById('lkbanner').style.display='flex';
+  document.querySelectorAll('.sk').forEach(e=>e.style.display='flex');
+  document.querySelectorAll('.sval').forEach(e=>e.disabled=true);
+  document.getElementById('btn-nadd').disabled=true;
+  document.getElementById('btn-nrst').disabled=true;
+  document.querySelectorAll('#nlist .ntxt').forEach(t=>t.disabled=true);
+  document.querySelectorAll('#nlist .ndel').forEach(b=>b.disabled=true);
+}
+function handleSettingsTab(){if(!CU){openLogin();return}switchTab('settings')}
+
+let toastT;
+function showToast(msg){
+  let t=document.getElementById('_toast');
+  if(!t){t=document.createElement('div');t.id='_toast';
+    t.style.cssText='position:fixed;bottom:26px;left:50%;transform:translateX(-50%);background:#162436;border:1px solid rgba(46,134,171,.4);border-radius:20px;padding:9px 16px;font-size:12px;font-weight:600;color:#A8DADC;z-index:200;white-space:nowrap;box-shadow:0 6px 20px rgba(0,0,0,.4);transition:opacity .3s;opacity:0;pointer-events:none';
+    document.body.appendChild(t)}
+  t.textContent=msg;t.style.opacity='1';
+  clearTimeout(toastT);toastT=setTimeout(()=>t.style.opacity='0',2500);
+}
+
+// ═══════════ TABS ═══════════
+function switchTab(name){
+  const map=['calc','pricelist','settings'];
+  document.querySelectorAll('.tab').forEach((t,i)=>t.classList.toggle('active',map[i]===name));
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  document.getElementById('panel-'+name).classList.add('active');
+  document.querySelectorAll('#panel-'+name+' .card').forEach((c,i)=>{
+    c.style.animation='none';
+    requestAnimationFrame(()=>c.style.animation=`fadeUp .3s ease ${i*.05}s both`);
+  });
+}
+
+// ═══════════ CALCULATOR ═══════════
+function step(id,d){const el=document.getElementById(id);el.value=Math.max(parseFloat(el.min)||0,(parseFloat(el.value)||0)+d);calc()}
+function rp(n){return'Rp '+Math.round(n).toLocaleString('id-ID')}
+function gv(id){return parseFloat(document.getElementById(id).value)||0}
+function sv(id,val,z=false){
+  const el=document.getElementById(id);if(!el)return;
+  el.textContent=val;
+  el.className='rval'+(z?' zero':id==='r-ppc'||id==='r-svc'?' hi':'');
+}
+
+function calc(){
+  const size=document.getElementById('inp-size').value;
+  const stitch=gv('inp-stitch'),colors=gv('inp-colors'),qty=gv('inp-qty');
+  const digCat=document.getElementById('inp-dig').value;
+  const dFee=gv('inp-dfee'),setup=gv('inp-setup'),emb=gv('inp-emb'),pack=gv('inp-pack'),ship=gv('inp-ship');
+
+  const bp={Small:gv('s-bp-sm'),Medium:gv('s-bp-md'),Large:gv('s-bp-lg')};
+  const is_={Small:gv('s-is-sm'),Medium:gv('s-is-md'),Large:gv('s-is-lg')};
+  const er=gv('s-er');
+  const ic={Small:gv('s-ic-sm'),Medium:gv('s-ic-md'),Large:gv('s-ic-lg')};
+  const cr={Small:gv('s-cr-sm'),Medium:gv('s-cr-md'),Large:gv('s-cr-lg')};
+  const dmn={Simple:gv('s-dm-si'),Medium:gv('s-dm-md'),Complex:gv('s-dm-cx')};
+  const dmx={Simple:gv('s-dx-si'),Medium:gv('s-dx-md'),Complex:gv('s-dx-cx')};
+  const fdS=gv('s-fd-sm'),fdM=gv('s-fd-sm2');
+
+  const base=bp[size]||0;
+  const inclS=is_[size]||0;
+  const extS=Math.max(0,stitch-inclS);
+  const sCost=Math.floor(extS/1000)*er;
+  const inclC=ic[size]||0;
+  const extC=Math.max(0,colors-inclC);
+  const cRate=cr[size]||0;
+  const cSurch=extC*cRate;
+  const ppc=base+sCost+cSurch;
+  const svcTot=setup+emb+pack+ship;
+  const total=ppc*qty+dFee+svcTot;
+
+  let digFree=false,digNote='';
+  if(size==='Large') digNote='❌ Large tidak eligible free digitizing';
+  else if(size==='Small'&&qty>=fdM){digFree=true;digNote=`✅ GRATIS — qty ≥ ${fdM} pcs (Sm+Med)`}
+  else if(size==='Small'&&qty>=fdS){digFree=true;digNote=`✅ GRATIS — qty ≥ ${fdS} pcs (Small)`}
+  else if(size==='Medium'&&qty>=fdM){digFree=true;digNote=`✅ GRATIS — qty ≥ ${fdM} pcs (Sm+Med)`}
+  else digNote=`❌ Berbayar — butuh ≥ ${size==='Small'?fdS:fdM} pcs untuk free`;
+
+  sv('r-base',rp(base));
+  sv('r-incl-s',inclS.toLocaleString('id-ID'));
+  sv('r-extra-s',extS.toLocaleString('id-ID'),extS===0);
+  sv('r-scost',rp(sCost),sCost===0);
+  sv('r-incl-c',inclC.toLocaleString('id-ID'));
+  sv('r-extra-c',extC.toLocaleString('id-ID'),extC===0);
+  sv('r-crate',rp(cRate));
+  sv('r-csurch',rp(cSurch),cSurch===0);
+  sv('r-ppc',rp(ppc));
+  sv('r-dcat',digCat);
+  sv('r-dmin',rp(dmn[digCat]));
+  sv('r-dmax',rp(dmx[digCat]));
+  sv('r-setup',rp(setup),setup===0);
+  sv('r-emb',rp(emb),emb===0);
+  sv('r-pack',rp(pack),pack===0);
+  sv('r-ship',rp(ship),ship===0);
+  sv('r-svc',rp(svcTot),svcTot===0);
+  sv('r-total',rp(total));
+
+  document.getElementById('r-dstatus').innerHTML=
+    `<div class="dstatus ${digFree?'free':'paid'}"><span>${digFree?'🆓':'💳'}</span><span>${digNote}</span></div>`;
+  document.getElementById('r-tbreak').textContent=
+    `${rp(ppc)} × ${qty} pcs  +  Dig ${rp(dFee)}  +  Service ${rp(svcTot)}`;
+
+  const payEl=document.getElementById('r-pay');
+  const isDP=qty>=26;
+  if(isDP){
+    payEl.className='ppill';
+    payEl.innerHTML=`✅ DP 50%: ${rp(total/2)} &nbsp;|&nbsp; Pelunasan: ${rp(total/2)}`;
+  }else{
+    payEl.className='ppill warn';
+    payEl.innerHTML=`⚠️ FULL PAYMENT: ${rp(total)}`;
+  }
+}
+
+// ═══════════ NOTES ═══════════
+const NK='orelrelios_notes';
+const DN=['Produksi setelah desain disetujui + payment','Tidak ada revisi setelah produksi dimulai','Large max: 22.5 × 9 cm (batas hoop mesin)','Ganti benang = tambah waktu produksi','Harga final dikonfirmasi sebelum produksi'];
+let notes=(()=>{try{const s=localStorage.getItem(NK);return s?JSON.parse(s):[...DN]}catch{return[...DN]}})();
+let saveT=null;
+
+function saveNotes(){
+  try{localStorage.setItem(NK,JSON.stringify(notes));
+    const b=document.getElementById('sbadge');
+    if(b){b.classList.add('vis');clearTimeout(b._t);b._t=setTimeout(()=>b.classList.remove('vis'),2200)}}catch(e){}
+}
+function schedSave(){clearTimeout(saveT);saveT=setTimeout(saveNotes,600)}
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
+
+function renderNotes(){
+  const list=document.getElementById('nlist');
+  list.innerHTML='';const lk=!CU;
+  notes.forEach((txt,i)=>{
+    const el=document.createElement('div');el.className='nitem';
+    el.innerHTML=`<span class="nicon">•</span>
+      <textarea class="ntxt" rows="1" placeholder="Tulis catatan..." ${lk?'disabled':''}
+        oninput="notes[${i}]=this.value;ar(this);renderPreview();schedSave()"
+        onblur="renderPreview()">${esc(txt)}</textarea>
+      <button class="ndel" onclick="delNote(${i})" ${lk?'disabled':''}>✕</button>`;
+    list.appendChild(el);
+    requestAnimationFrame(()=>ar(el.querySelector('textarea')));
+  });
+  renderPreview();
+  const nc=document.getElementById('ncnt');if(nc)nc.textContent=notes.length+' catatan';
+}
+function renderPreview(){
+  const el=document.getElementById('notes-preview');if(!el)return;
+  const v=notes.filter(n=>n.trim());
+  el.innerHTML=v.length===0?'<span style="color:var(--muted);font-size:12px;font-style:italic">Belum ada catatan.</span>':v.map(n=>`<div class="nl"><span>•</span><span>${esc(n)}</span></div>`).join('');
+}
+function addNote(){if(!CU)return;notes.push('');renderNotes();const it=document.querySelectorAll('#nlist .ntxt');if(it.length)it[it.length-1].focus();schedSave()}
+function delNote(i){if(!CU)return;notes.splice(i,1);renderNotes();schedSave()}
+function resetNotes(){if(!CU||!confirm('Reset ke catatan default?'))return;notes=[...DN];renderNotes();saveNotes()}
+function ar(ta){ta.style.height='auto';ta.style.height=ta.scrollHeight+'px'}
+
+// ═══════════ INIT ═══════════
+updateAuthUI();
+if(CU)unlock();
+renderNotes();
+calc();
+</script>
+</body>
+</html>
