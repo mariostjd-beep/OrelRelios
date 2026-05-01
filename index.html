@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0">
-<title>OrelRelios Embroidery Cal</title>
+<title>OrelRelios Embroidery Calculator</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 /* ══════════════════════════════════════
@@ -286,6 +286,21 @@ input.sval:disabled{opacity:.35;cursor:not-allowed}
 .mswitch a:hover{color:var(--acc2)}
 [data-theme="orel"] .mswitch a:hover{color:#E8559A}
 
+/* ── ADD ON ── */
+.addon-item{display:flex;align-items:center;gap:7px;margin-bottom:8px}
+.addon-name{flex:1;background:var(--inp);border:1px solid var(--brd);border-radius:8px;
+  color:var(--txt);font-family:'DM Sans',sans-serif;font-size:12px;font-weight:500;
+  padding:8px 10px;outline:none;transition:border-color .2s;min-width:0}
+.addon-name:focus{border-color:var(--acc)}
+.addon-price-wrap{display:flex;align-items:center;background:var(--inp);border:1px solid var(--brd);
+  border-radius:8px;padding:0 8px;gap:4px;flex-shrink:0}
+.addon-price-pre{color:var(--muted);font-size:10px;white-space:nowrap}
+.addon-price{background:none;border:none;color:var(--txt);font-family:'DM Mono',monospace;
+  font-size:12px;font-weight:600;width:72px;outline:none;padding:8px 0;text-align:right}
+.addon-del{background:none;border:none;color:var(--muted);font-size:16px;cursor:pointer;
+  padding:4px;border-radius:6px;line-height:1;transition:color .15s;flex-shrink:0}
+.addon-del:hover{color:var(--warn)}
+
 /* ── SAVE BADGE ── */
 .sbadge{font-size:10px;font-weight:600;color:var(--acc2);
   background:rgba(23,165,137,.12);border:1px solid rgba(23,165,137,.3);
@@ -359,7 +374,7 @@ input.sval:disabled{opacity:.35;cursor:not-allowed}
       <circle cx="46" cy="43" r="2.5" fill="#E8559A"/>
     </svg>
     <div>
-      <div class="topbar-title">OrelRelios Embroidery Cal</div>
+      <div class="topbar-title">OrelRelios Embroidery Calculator</div>
       <div class="topbar-sub">Custom Patch Price Calculator</div>
     </div>
   </div>
@@ -415,11 +430,11 @@ input.sval:disabled{opacity:.35;cursor:not-allowed}
       </div>
     </div>
     <div class="irow">
-      <div><div class="ilabel">Quantity</div><div class="ihint">Jumlah order (pcs)</div></div>
+      <div><div class="ilabel">Quantity</div><div class="ihint" id="qty-hint">Jumlah order (pcs)</div></div>
       <div class="num-wrap">
-        <button class="nbtn" onclick="step('inp-qty',-1)">−</button>
-        <input type="number" id="inp-qty" value="10" min="5" step="1" oninput="calc()">
-        <button class="nbtn" onclick="step('inp-qty',1)">+</button>
+        <button class="nbtn" onclick="stepQty(-1)">−</button>
+        <input type="number" id="inp-qty" value="10" min="1" step="1" oninput="calc()">
+        <button class="nbtn" onclick="stepQty(1)">+</button>
       </div>
     </div>
     <div class="irow">
@@ -502,6 +517,19 @@ input.sval:disabled{opacity:.35;cursor:not-allowed}
         <span class="rlabel" style="color:var(--txt);font-weight:700">Total Service</span>
         <span class="rval hi" id="r-svc">Rp 0</span>
       </div>
+    </div>
+  </div>
+
+  <!-- ADD ON -->
+  <div class="card" id="card-addon">
+    <div class="card-title">✨ Add On</div>
+    <div id="addon-list"></div>
+    <div style="margin-top:10px;display:flex;gap:8px">
+      <button onclick="addAddon()" style="flex:1;padding:9px;background:var(--inp);border:1px solid var(--brd);border-radius:8px;color:var(--acc);font-family:'DM Sans',sans-serif;font-size:12px;font-weight:700;cursor:pointer;transition:background .2s" onmouseover="this.style.background='var(--card)'" onmouseout="this.style.background='var(--inp)'">+ Tambah Add On</button>
+    </div>
+    <div style="margin-top:10px;padding-top:10px;border-top:1px solid var(--brd);display:flex;justify-content:space-between;align-items:center">
+      <span class="rlabel" style="color:var(--txt);font-weight:700">Total Add On</span>
+      <span class="rval hi" id="r-addon-total">Rp 0</span>
     </div>
   </div>
 
@@ -867,6 +895,12 @@ function switchTab(name){
 
 // ═══════════ CALCULATOR ═══════════
 function step(id,d){const el=document.getElementById(id);el.value=Math.max(parseFloat(el.min)||0,(parseFloat(el.value)||0)+d);calc()}
+function stepQty(d){
+  const el=document.getElementById('inp-qty');
+  const cur=parseFloat(el.value)||1;
+  el.value=Math.max(1,cur+d);
+  calc();
+}
 function rp(n){return'Rp '+Math.round(n).toLocaleString('id-ID')}
 function gv(id){return parseFloat(document.getElementById(id).value)||0}
 function sv(id,val,z=false){
@@ -880,6 +914,11 @@ function calc(){
   const stitch=gv('inp-stitch'),colors=gv('inp-colors'),qty=gv('inp-qty');
   const digCat=document.getElementById('inp-dig').value;
   const dFee=gv('inp-dfee'),setup=gv('inp-setup'),emb=gv('inp-emb'),pack=gv('inp-pack'),ship=gv('inp-ship');
+
+  // Update qty hint per size
+  const qtyHint=document.getElementById('qty-hint');
+  const qtyHints={Small:'Min 1 pcs — bisa order satuan',Medium:'Min 1 pcs — bisa order satuan',Large:'Min 1 pcs — bisa order satuan'};
+  if(qtyHint)qtyHint.textContent=qtyHints[size]||'Jumlah order (pcs)';
 
   const bp={Small:gv('s-bp-sm'),Medium:gv('s-bp-md'),Large:gv('s-bp-lg')};
   const is_={Small:gv('s-is-sm'),Medium:gv('s-is-md'),Large:gv('s-is-lg')};
@@ -900,7 +939,11 @@ function calc(){
   const cSurch=extC*cRate;
   const ppc=base+sCost+cSurch;
   const svcTot=setup+emb+pack+ship;
-  const total=ppc*qty+dFee+svcTot;
+
+  // Add On total
+  const addonTotal=getAddonTotal();
+
+  const total=ppc*qty+dFee+svcTot+addonTotal;
 
   let digFree=false,digNote='';
   if(size==='Large') digNote='❌ Large tidak eligible free digitizing';
@@ -928,10 +971,16 @@ function calc(){
   sv('r-svc',rp(svcTot),svcTot===0);
   sv('r-total',rp(total));
 
+  // Addon total display
+  const adEl=document.getElementById('r-addon-total');
+  if(adEl){adEl.textContent=rp(addonTotal);adEl.className='rval'+(addonTotal===0?' zero':' hi')}
+
   document.getElementById('r-dstatus').innerHTML=
     `<div class="dstatus ${digFree?'free':'paid'}"><span>${digFree?'🆓':'💳'}</span><span>${digNote}</span></div>`;
+
+  const addOnStr=addonTotal>0?`  +  Add On ${rp(addonTotal)}`:'';
   document.getElementById('r-tbreak').textContent=
-    `${rp(ppc)} × ${qty} pcs  +  Dig ${rp(dFee)}  +  Service ${rp(svcTot)}`;
+    `${rp(ppc)} × ${qty} pcs  +  Dig ${rp(dFee)}  +  Service ${rp(svcTot)}${addOnStr}`;
 
   const payEl=document.getElementById('r-pay');
   const isDP=qty>=26;
@@ -943,6 +992,36 @@ function calc(){
     payEl.innerHTML=`⚠️ FULL PAYMENT: ${rp(total)}`;
   }
 }
+
+// ═══════════ ADD ON ═══════════
+let addons=[];
+function getAddonTotal(){return addons.reduce((s,a)=>s+(parseFloat(a.price)||0),0)}
+function addAddon(){
+  addons.push({name:'',price:0});
+  renderAddons();
+  const inputs=document.querySelectorAll('.addon-name');
+  if(inputs.length)inputs[inputs.length-1].focus();
+}
+function delAddon(i){addons.splice(i,1);renderAddons();calc()}
+function renderAddons(){
+  const list=document.getElementById('addon-list');
+  if(!list)return;
+  list.innerHTML='';
+  addons.forEach((a,i)=>{
+    const div=document.createElement('div');div.className='addon-item';
+    div.innerHTML=`
+      <input class="addon-name" type="text" placeholder="Nama add on..." value="${escAddon(a.name)}"
+        oninput="addons[${i}].name=this.value;calc()">
+      <div class="addon-price-wrap">
+        <span class="addon-price-pre">Rp</span>
+        <input class="addon-price" type="number" placeholder="0" value="${a.price||''}" min="0"
+          oninput="addons[${i}].price=parseFloat(this.value)||0;calc()">
+      </div>
+      <button class="addon-del" onclick="delAddon(${i})">✕</button>`;
+    list.appendChild(div);
+  });
+}
+function escAddon(s){return String(s).replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
 
 // ═══════════ NOTES ═══════════
 const NK='orelrelios_notes';
@@ -988,6 +1067,7 @@ function ar(ta){ta.style.height='auto';ta.style.height=ta.scrollHeight+'px'}
 updateAuthUI();
 if(CU)unlock();
 renderNotes();
+renderAddons();
 calc();
 </script>
 </body>
